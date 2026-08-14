@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+ <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    
+     <head>
+         <div th:replace="~{fragment :: meta}"></div>   
+              
+         <div th:replace="~{fragment :: styles}"></div>
+           
+         <title>レビュー投稿</title>   
+     </head>
+     <body>
+         <div class="samuraitravel-wrapper">
+             <!-- ヘッダー -->
+             <div th:replace="~{fragment :: header}"></div>
+             
+             <main>
+                 <div class="container pt-4 pb-5 samuraitravel-container">
+                     <div class="row justify-content-center">
+                         <div class="col-xl-5 col-lg-6 col-md-8">
+                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                 <ol class="breadcrumb mb-0">                        
+                                     <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                     <li class="breadcrumb-item"><a th:href="@{/restaurants}">民宿一覧</a></li>
+                                     <li class="breadcrumb-item"><a th:href="@{/restaurants/__${restaurant.getId()}__}">民宿詳細</a></li>
+                                     <li class="breadcrumb-item active" aria-current="page">レビュー投稿</li>
+                                 </ol>
+                             </nav>
+                             
+                             <!-- h1タグへth:textでrestaurant.getName() + 'のレビュー投稿'を設定 -->
+                             <h1 class="mb-4 text-center" th:text="${restaurant.getName()} + 'のレビュー投稿'"></h1> 
+                                       
+                             <!-- h1タグへth:actionで/restaurants/(restaurantのgetId())/reviews/createを設定、さらにth:objectでreviewRegisterFormを指定 -->
+                             <form method="post" th:action="@{/restaurants/__${restaurant.getId()}__/reviews/create}" th:object="${reviewRegisterForm}">                                                                                            
+                                 <div class="form-group row mb-3">
+                                     <div class="col-md-3">
+                                         <label for="name" class="col-form-label text-md-left fw-bold">評価</label>
+                                     </div>
+                                     <div class="col-md-9">                                    
+                                         <!-- divタグへth:ifにて#fields.hasErrorsのscoreを設定。th:errorsにてsocreを設定 -->
+                                         <div class="text-danger small mb-2" th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>                                    
+                                         <!-- selectタグへth:fieldにてscoreを設定 -->
+                                         <select th:field="*{score}">
+                                             <!-- optionタグを作成、バリューに1~5をセットして表示を☆1個～5個をセット(ここはQ&A等で確認してみてください) -->
+                                             <option value=1>☆</option>
+                                             <option value=2>☆☆</option>
+                                             <option value=3>☆☆☆</option>
+                                             <option value=4>☆☆☆☆</option>
+                                             <option value=5>☆☆☆☆☆</option>
+                                         </select>
+                                     </div>
+                                 </div>                               
+                                 
+                                 <div class="form-group row mb-3">
+                                     <div class="col-md-3">
+                                         <label for="description" class="col-form-label text-md-left fw-bold">コメント</label>
+                                     </div>
+                                     <div class="col-md-9">                            
+                                         <!-- divタグへth:ifにて#fields.hasErrorsのcontentを設定。th:errorsにてcontentを設定 -->
+                                         <div class="text-danger small mb-2" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>                                        
+                                         <!-- textareaタグへth:fieldにてcontent(colsとrowsは調整してください)を設定。 -->
+                                         <textarea class="form-control" cals="1" rows="5" th:field="*{content}"></textarea>
+                                     </div>
+                                 </div>                                                                                                                        
+                                 
+                                 <div class="form-group d-flex justify-content-center my-4">
+                                     <button type="submit" class="btn text-white shadow-sm w-50 samuraitravel-btn">投稿</button>
+                                 </div>
+                             </form>                                                          
+                         </div>
+                     </div>
+                 </div>                             
+             </main>
+             
+             <!-- フッター -->
+             <div th:replace="~{fragment :: footer}"></div>
+         </div>    
+         
+         <div th:replace="~{fragment :: scripts}"></div>  
+   </body>
+ </html>
