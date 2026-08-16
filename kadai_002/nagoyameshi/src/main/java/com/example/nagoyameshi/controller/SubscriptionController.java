@@ -1,6 +1,9 @@
 package com.example.nagoyameshi.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/subscription")
@@ -60,7 +64,9 @@ public class SubscriptionController {
     @GetMapping("/success")
     public String subscriptionSuccess(
             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-            String session_id) {
+            String session_id,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
         try {
             /*
@@ -97,8 +103,19 @@ public class SubscriptionController {
             user.setRole(paidMemberRole);
             
             userRepository.save(user);
+            
+            //強制ログアウト
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
 
-            return "redirect:/";
+            new SecurityContextLogoutHandler()
+                    .logout(request, response, authentication);
+
+            /*
+             * ログイン画面へ
+             */
+            return "redirect:/login";
+//            return "redirect:/";
 
         } catch (StripeException e) {
             e.printStackTrace();
@@ -110,7 +127,9 @@ public class SubscriptionController {
     @PostMapping("/cancel")
     public String cancelSubscription(
             @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
         User user = userDetailsImpl.getUser();
 
@@ -169,12 +188,26 @@ public class SubscriptionController {
 
         // DB更新
         userRepository.save(user);
+        
+        /* 強制ログアウト */
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        new SecurityContextLogoutHandler()
+                .logout(request, response, authentication);
+
         redirectAttributes.addFlashAttribute(
                 "successMessage",
                 "サブスクリプションを解約しました。"
         );
 
-        return "redirect:/";
+        return "redirect:/login";
+//        redirectAttributes.addFlashAttribute(
+//                "successMessage",
+//                "サブスクリプションを解約しました。"
+//        );
+//
+//        return "redirect:/";
     }
     
     @GetMapping("/card")

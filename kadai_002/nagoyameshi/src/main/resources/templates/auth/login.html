@@ -16,7 +16,12 @@
                <div class="container pt-4 pb-5 samuraitravel-container">
                    <div class="row justify-content-center">        
                        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-7">                            
-                           <h1 class="mb-4 text-center">ログイン</h1>            
+                           <h1 class="mb-4 text-center">ログイン</h1>    
+                           
+                           <!-- 解約成功メッセージ -->
+                           <div th:if="${successMessage}" class="alert alert-success">
+							   <span th:text="${successMessage}"></span>
+						   </div>        
                        
                            <div th:if="${param.error}" class="alert alert-danger">
                                メールアドレスまたはパスワードが正しくありません。

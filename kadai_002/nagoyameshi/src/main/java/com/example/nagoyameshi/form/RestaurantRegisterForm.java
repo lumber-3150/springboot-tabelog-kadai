@@ -1,5 +1,6 @@
 package com.example.nagoyameshi.form;
 
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +31,10 @@ public class RestaurantRegisterForm {
     @NotNull(message = "定員を入力してください。")
     @Min(value = 1, message = "定員は1人以上に設定してください。")
     private Integer seating_capacity;     
+
+    private Time opening_time;
+    
+    private Time closing_time;
     
     @NotBlank(message = "郵便番号を入力してください。")
     private String postalCode;

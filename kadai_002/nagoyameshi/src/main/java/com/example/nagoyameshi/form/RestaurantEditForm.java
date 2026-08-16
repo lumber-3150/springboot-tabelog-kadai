@@ -1,9 +1,11 @@
 package com.example.nagoyameshi.form;
 
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +39,12 @@ public class RestaurantEditForm {
     @NotNull(message = "定員を入力してください。")
     @Min(value = 1, message = "定員は1人以上に設定してください。")
     private Integer seating_capacity;       
+    
+    @Column(name = "opening_time")
+    private Time opening_time;
+    
+    @Column(name = "closing_time")
+    private Time closing_time;
     
     @NotBlank(message = "郵便番号を入力してください。")
     private String postalCode;

@@ -105,8 +105,6 @@ public class RestaurantController {
         
         List<Review> reviewList = reviewRepository.findTop6ByRestaurantOrderByCreatedAtDesc(restaurant);
         
-        model.addAttribute("reviewFlag", reviewFlag);
-        
         Long totalCount = reviewRepository.countByRestaurant(restaurant);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("totalCount", totalCount);
@@ -114,15 +112,23 @@ public class RestaurantController {
         
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		
+		
+		if(userDetailsImpl != null) {
 		Favorite favorite = favoriteRepository.findByRestaurantAndUser(restaurant, userDetailsImpl.getUser());
-        if(favorite != null) {
+		if(favorite != null) {
         	favoriteFlag = true;
         }
+		
+		Review review = reviewRepository.findByRestaurantAndUser(restaurant, userDetailsImpl.getUser());
+        if(review != null) {
+        	reviewFlag = true;
+        }
+        model.addAttribute("reviewFlag", reviewFlag);        
         
         model.addAttribute("favoriteFlag", favoriteFlag);
         model.addAttribute("favorite", favorite);
         
-        
+		}
         
         return "restaurants/show";
     }

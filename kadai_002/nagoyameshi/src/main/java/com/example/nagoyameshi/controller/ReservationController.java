@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.controller;
 
+import java.time.LocalTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -48,43 +50,6 @@ public class ReservationController {
         return "reservations/index";
     }
     
-//    @GetMapping("/restaurants/{id}/reservations/input")
-//    public String input(@PathVariable(name = "id") Integer id,
-//                        @ModelAttribute @Validated ReservationInputForm reservationInputForm,
-//                        BindingResult bindingResult,
-//                        RedirectAttributes redirectAttributes,
-//                        Model model)
-//    {   
-//        Restaurant restaurant = restaurantRepository.getReferenceById(id);
-//        Integer numberOfPeople = reservationInputForm.getNumberOfPeople();   
-//        Integer capacity = restaurant.getSeating_capacity();
-        
-//        if (numberOfPeople != null) {
-//            if (!reservationService.isWithinCapacity(numberOfPeople, capacity)) {
-//                FieldError fieldError = new FieldError(bindingResult.getObjectName(), "numberOfPeople", "宿泊人数が定員を超えています。");
-//                bindingResult.addError(fieldError);                
-//            }            
-//        }         
-        
-//        if (bindingResult.hasErrors()) {            
-//            model.addAttribute("restaurant", restaurant);            
-//            model.addAttribute("errorMessage", "予約内容に不備があります。"); 
-//            return "restaurants/show";
-//        }
-//        
-//        redirectAttributes.addFlashAttribute("reservationInputForm", reservationInputForm);           
-//        
-//        return "redirect:/restaurants/{id}/reservations/create";
-//    }
-    
-//    comfirm飛ばしてcreate
-//    @PostMapping("/restaurants/{id}/reservations/create")
-//    public String create(@ModelAttribute ReservationRegisterForm reservationRegisterForm) {                
-//        reservationService.create(reservationRegisterForm);        
-//        
-//        return "redirect:/reservations?reserved";
-//    }
-    
     @PostMapping("/restaurants/{id}/reservations/create")
     public String create(
             @PathVariable(name = "id") Integer id,
@@ -96,6 +61,27 @@ public class ReservationController {
 
         Restaurant restaurant = restaurantRepository.getReferenceById(id);
 
+        if (!bindingResult.hasErrors() && reservationInputForm.getReservedDatetime() != null) {
+
+            LocalTime reservationTime 	= reservationInputForm.getReservedDatetime().toLocalTime();
+            LocalTime openingTime 		= restaurant.getOpening_time().toLocalTime();
+            LocalTime closingTime 		= restaurant.getClosing_time().toLocalTime();
+
+            if (reservationTime.isBefore(openingTime)
+                    || reservationTime.isAfter(closingTime)) {
+
+                bindingResult.rejectValue(
+                        "reservedDatetime",
+                        "error.reservedDatetime",
+                        "予約時間は"
+                                + openingTime
+                                + "～"
+                                + closingTime
+                                + "の間で選択してください。"
+                );
+            }
+        }
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("restaurant", restaurant);
             return "restaurants/show";

@@ -47,6 +47,8 @@ public class RestaurantService {
        restaurant.setSeating_capacity(restaurantRegisterForm.getSeating_capacity());
        restaurant.setPostalCode(restaurantRegisterForm.getPostalCode());
        restaurant.setAddress(restaurantRegisterForm.getAddress());
+       restaurant.setOpening_time(restaurantRegisterForm.getOpening_time());
+       restaurant.setClosing_time(restaurantRegisterForm.getClosing_time());
 //       restaurant.setPhoneNumber(restaurantRegisterForm.getPhoneNumber());
                    
        restaurantRepository.save(restaurant);
@@ -77,6 +79,8 @@ public class RestaurantService {
        restaurant.setSeating_capacity(restaurantEditForm.getSeating_capacity());
        restaurant.setPostalCode(restaurantEditForm.getPostalCode());
        restaurant.setAddress(restaurantEditForm.getAddress());
+       restaurant.setOpening_time(restaurantEditForm.getOpening_time());
+       restaurant.setClosing_time(restaurantEditForm.getClosing_time());
 //       restaurant.setPhoneNumber(restaurantEditForm.getPhoneNumber());
                    
        restaurantRepository.save(restaurant);

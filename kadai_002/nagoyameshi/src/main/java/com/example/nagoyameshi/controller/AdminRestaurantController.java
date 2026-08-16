@@ -1,5 +1,6 @@
 package com.example.nagoyameshi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -72,6 +73,19 @@ public class AdminRestaurantController {
     	List<Category> categories = categoryService.findAllCategories();
         model.addAttribute("restaurantRegisterForm", new RestaurantRegisterForm());
         model.addAttribute("categories", categories);
+        
+     // 30分刻みの時刻を作成
+	    List<String> timeOptions = new ArrayList<>();
+
+	    for (int hour = 0; hour <= 23; hour++) {
+	        for (int minute = 0; minute < 60; minute += 30) {
+	            timeOptions.add(String.format("%02d:%02d:00", hour, minute));
+	        }
+	    }
+
+	    model.addAttribute("timeOptions", timeOptions);
+		        
+        
         return "admin/restaurants/register";
     }  
     
@@ -81,6 +95,17 @@ public class AdminRestaurantController {
 //        	List<Category> categories = categoryService.findAllCategories();
         	
 //        	model.addAttribute("categories", categories);
+        	
+        	List<String> timeOptions = new ArrayList<>();
+
+            for (int hour = 0; hour <= 23; hour++) {
+                for (int minute = 0; minute < 60; minute += 30) {
+                    timeOptions.add(String.format("%02d:%02d:00", hour, minute));
+                }
+            }
+
+            model.addAttribute("timeOptions", timeOptions);
+
         	
             return "admin/restaurants/register";
         }
@@ -96,10 +121,21 @@ public class AdminRestaurantController {
         Restaurant restaurant = restaurantRepository.getReferenceById(id);
         String imageName = restaurant.getImage();
         List<Integer> categoryIds = categoryRestaurantService.findCategoryIdsByRestaurantOrderByIdAsc(restaurant);
-        RestaurantEditForm restaurantEditForm = new RestaurantEditForm(restaurant.getId(), restaurant.getName(), null, restaurant.getDescription(), restaurant.getLowestPrice(), restaurant.getHighestPrice(), restaurant.getSeating_capacity(), restaurant.getPostalCode(), restaurant.getAddress(),categoryIds);
+        RestaurantEditForm restaurantEditForm = new RestaurantEditForm(restaurant.getId(), restaurant.getName(), null, restaurant.getDescription(), restaurant.getLowestPrice(), restaurant.getHighestPrice(), restaurant.getSeating_capacity(), restaurant.getOpening_time(), restaurant.getClosing_time(), restaurant.getPostalCode(), restaurant.getAddress(),categoryIds);
         
         List<Category> categories = categoryService.findAllCategories();
         
+     // 30分刻みの時刻を作成
+	    List<String> timeOptions = new ArrayList<>();
+
+	    for (int hour = 0; hour <= 23; hour++) {
+	        for (int minute = 0; minute < 60; minute += 30) {
+	            timeOptions.add(String.format("%02d:%02d:00", hour, minute));
+	        }
+	    }
+
+	    model.addAttribute("timeOptions", timeOptions);
+		        
         model.addAttribute("imageName", imageName);
         model.addAttribute("restaurantEditForm", restaurantEditForm);
         model.addAttribute("categories", categories);

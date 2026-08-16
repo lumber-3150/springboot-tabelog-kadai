@@ -30,7 +30,7 @@ INSERT IGNORE INTO users
 (id, name, kana, email, email_verified_at, password, role_id, enabled, postal_code, address, phone_number, birthday, remember_token)
 VALUES
 (1, '山田 太郎', 'ヤマダ タロウ', 'taro.yamada@example.com', NOW(), '$2a$10$ykIHxOG3AT8Qoo2nJXIYsOCq7IA1qmP7g4jMv6IRNaaAEV.vRkcPe', 1, TRUE, '460-0001', '愛知県名古屋市中区三の丸1-1-1', '090-1111-1111', '1995-04-12', 'token001'),
-(2, '佐藤 花子', 'サトウ ハナコ', 'hanako.sato@example.com', NOW(), '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 1, TRUE, '461-0001', '愛知県名古屋市東区泉1-2-3', '090-2222-2222', '1998-07-21', 'token002'),
+(2, '佐藤 花子', 'サトウ ハナコ', 'hanako.sato@example.com', NOW(), '$2a$10$ykIHxOG3AT8Qoo2nJXIYsOCq7IA1qmP7g4jMv6IRNaaAEV.vRkcPe', 1, TRUE, '461-0001', '愛知県名古屋市東区泉1-2-3', '090-2222-2222', '1998-07-21', 'token002'),
 (3, '鈴木 一郎', 'スズキ イチロウ', 'ichiro.suzuki@example.com', NOW(), '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 1, TRUE, '453-0015', '愛知県名古屋市中村区椿町5-6', '090-3333-3333', '1992-11-03', 'token003'),
 (4, '高橋 美咲', 'タカハシ ミサキ', 'misaki.takahashi@example.com', NOW(), '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 1, TRUE, '464-0807', '愛知県名古屋市千種区東山通3-10', '090-4444-4444', '1999-02-14', 'token004'),
 (5, '伊藤 健', 'イトウ ケン', 'ken.ito@example.com', NOW(), '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 1, TRUE, '466-0051', '愛知県名古屋市昭和区御器所2-8-1', '090-5555-5555', '1988-06-18', 'token005'),

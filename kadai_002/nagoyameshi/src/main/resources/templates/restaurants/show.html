@@ -147,9 +147,27 @@
 <!--                                                <form method="get" th:action="@{/restaurants/__${restaurant.getId()}__/reservations/input}" th:object="${reservationInputForm}">                                                                                                                                                                       -->
                                                     <form method="post" th:action="@{/restaurants/{id}/reservations/create(id=${restaurant.id})}" th:object="${reservationInputForm}">
                                                     <div class="form-group mb-2">                                            
-                                                        <label for="reservationDatetime" class="col-form-label text-md-left fw-bold">予約日時</label>    
-                                                        <div th:if="${#fields.hasErrors('reservedDatetime')}" class="text-danger small mb-2" th:errors="*{reservedDatetime}"></div>                                          
-                                                        <input type="text" class="form-control" th:field="*{reservedDatetime}">                                                                     
+<!--                                                        <label for="reservationDatetime" class="col-form-label text-md-left fw-bold">予約日</label>-->
+                                                            
+<!--                                                        <div th:if="${#fields.hasErrors('reservedDatetime')}" class="text-danger small mb-2" th:errors="*{reservedDatetime}"></div>                                          -->
+<!--                                                        <input type="text" class="form-control" th:field="*{reservedDatetime}">     -->
+                                                        <div class="form-group mb-2">
+															<label for="reservedDatetime" class="col-form-label text-md-left fw-bold">予約日時</label>
+															<div th:if="${#fields.hasErrors('reservedDatetime')}" class="text-danger small mb-2" th:errors="*{reservedDatetime}">
+															</div>
+															<input type="text" id="reservedDatetime" class="form-control" th:field="*{reservedDatetime}" placeholder="予約日時を選択してください" autocomplete="off">
+														</div>
+														
+														<!-- 予約時刻 -->
+<!--														<div class="form-group mb-2">-->
+<!--															<label for="reservationTime" class="col-form-label text-md-left fw-bold">予約時刻</label>-->
+<!--															<select class="form-select" th:field="*{closing_time}">-->
+<!--										   <option value="">選択してください</option>-->
+<!--																   <option th:each="time : ${timeOptions}" th:value="${time}" th:text="${time.substring(0, 5)}"></option>-->
+<!--															</select>-->
+															
+<!--														</div>-->
+															                         	                                                                                               
                                                     </div>
                                                     
                                                     <div class="form-group mb-4">                                            
@@ -172,7 +190,7 @@
                            <!-- レビュー機能 ここから -->
                              <div class="container px-0">
                                  <h2 class="mb-4 text-center">レビュー</h2>
-                                 <div class="row justify-content-center mb-4" sec:authorize="hasRole('ROLE_GENERAL')" th:unless="${reviewFlag}">
+                                 <div class="row justify-content-center mb-4" sec:authorize="hasRole('ROLE_GENERAL') or hasRole('ROLE_PREMIUM')" th:unless="${reviewFlag}">
                                      <div class="col-lg-4">
                                          <a th:href="@{/restaurants/__${restaurant.getId()}__/reviews/register}">レビューを投稿する</a>
                                      </div>
@@ -186,7 +204,7 @@
                                                  <div class="card-body">
                                                      <div class="d-flex justify-content-between">
                                                          <h5 class="card-title" th:text="${review.getUser().getName()}"></h5>                                                    
-                                                         <span sec:authorize="hasRole('ROLE_GENERAL')" th:if="${#authentication.principal.user.id == review.getUser().getId()}">
+                                                         <span sec:authorize="hasRole('ROLE_GENERAL') or hasRole('ROLE_PREMIUM')" th:if="${#authentication.principal.user.id == review.getUser().getId()}">
 
                                                              <a class="me-2" th:href="@{/restaurants/{restaurantId}/reviews/{reviewId}/edit(restaurantId=${restaurant.id}, reviewId=${review.id})}">編集</a>
                                                              <a href="#" class="samuraitravel-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReviewModal' + review.id}">削除</a>
